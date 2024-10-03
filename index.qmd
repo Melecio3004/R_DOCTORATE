@@ -2,25 +2,56 @@
 title: "Clase de R"
 format: html
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
+#Diseños experimentales
+##DCA: Diseño completamente al azar
+Dosis (4) de fertilización nitrogenada:
+-0
+-50
+-100
+-150
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
+Reps: 5
 ```{r}
-1 + 1
+# Instalar y cargar el paquete agricolae
+#install.packages("agricolae")
+library(agricolae)
+
+
+# Definir los tratamientos (dosis de fertilización nitrogenada)
+trt <- c(0, 50, 100, 150)
+
+# Definir el número de repeticiones
+#repeticiones <- 5
+
+# Generar el diseño completamente al azar (DCA)
+dca <- design.crd(trt = trt, 5, seed=123)
+
+# Mostrar el diseño completo
+print(dca)
+
+
+
+##DBCA
+#Factor 1 (dosis nitrogeno):0,50,100,150
+#Factor 2 (variedades de papa):canchan y peruanita
+#Bloques: 5
+
 ```
 
-You can add options to executable code like this
-
 ```{r}
-#| echo: false
-2 * 2
+dosis <-c(0,50,100,150)
+Variedad <-c("canchan","peruanita")
+#ds <- agricolae::design.ab()
+
+trt<-c(4,2) # factorial 4x2
+outdesign <-design.ab(trt = trt, r=5)
+str(outdesign)
+
+book<-outdesign$book
+book
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+
