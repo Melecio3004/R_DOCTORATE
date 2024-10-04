@@ -55,3 +55,55 @@ book
 ```
 
 
+```{r}
+library(readxl)
+fb <- read_excel("LA MOLINA 2014 POTATO WUE (FB).xlsx", 
+    sheet = "fb")
+
+
+```{r}
+str(fb)
+modelo <-aov(formula = lfa~bloque+riego+geno+riego*geno,data = fb)
+
+plot(modelo)
+
+anova(modelo)
+
+##comparación de medias
+```
+
+```{r}
+library(agricolae)
+mc <-agricolae::duncan.test(y = modelo,trt = c("riego","geno"))
+
+mc
+
+
+str(mc)
+```
+
+```{r}
+library(emmeans)
+library(multcomp)
+library(tidyverse)
+
+mc<- emmeans(modelo, ~ riego | geno) %>%
+  cld(letters = letters, reversed =T)
+
+mc
+##grafico
+```
+
+```{r}
+library(inti)
+plot_smr(data = mc
+         , type = "bar"
+         , x = "geno"
+         , y = "emmean"
+         , group = "riego"
+         , sig = ".group"
+         , error = "SE"
+         , ylimits = c(0, 12000, 2000)
+         )
+```
+
